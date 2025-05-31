@@ -1,0 +1,10 @@
+/Users/callum/Developer/zk-compat/program/target/elf-compilation/riscv32im-succinct-zkvm-elf/release/deps/libsp1_primitives-fc2691cd5ba57969.rmeta: /Users/callum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sp1-primitives-4.2.1/src/lib.rs /Users/callum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sp1-primitives-4.2.1/src/consts.rs /Users/callum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sp1-primitives-4.2.1/src/io.rs /Users/callum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sp1-primitives-4.2.1/src/types.rs
+
+/Users/callum/Developer/zk-compat/program/target/elf-compilation/riscv32im-succinct-zkvm-elf/release/deps/libsp1_primitives-fc2691cd5ba57969.rlib: /Users/callum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sp1-primitives-4.2.1/src/lib.rs /Users/callum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sp1-primitives-4.2.1/src/consts.rs /Users/callum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sp1-primitives-4.2.1/src/io.rs /Users/callum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sp1-primitives-4.2.1/src/types.rs
+
+/Users/callum/Developer/zk-compat/program/target/elf-compilation/riscv32im-succinct-zkvm-elf/release/deps/sp1_primitives-fc2691cd5ba57969.d: /Users/callum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sp1-primitives-4.2.1/src/lib.rs /Users/callum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sp1-primitives-4.2.1/src/consts.rs /Users/callum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sp1-primitives-4.2.1/src/io.rs /Users/callum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sp1-primitives-4.2.1/src/types.rs
+
+/Users/callum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sp1-primitives-4.2.1/src/lib.rs:
+/Users/callum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sp1-primitives-4.2.1/src/consts.rs:
+/Users/callum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sp1-primitives-4.2.1/src/io.rs:
+/Users/callum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sp1-primitives-4.2.1/src/types.rs:
