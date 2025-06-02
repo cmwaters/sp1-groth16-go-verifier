@@ -47,13 +47,13 @@ func main() {
 	}
 	fmt.Printf("Read groth16 verifier key file: %d bytes\n", len(groth16VkBytes))
 
-	sp1VkHash := sha256.Sum256(sp1VkBytes)
+	groth16VkHash := sha256.Sum256(groth16VkBytes)
 
 	// Compare first 4 bytes
-	if !bytes.Equal(sp1VkHash[:4], proofBytes[:4]) {
-		log.Fatalf("First 4 bytes of verifier key hash (%x) do not match proof hash (%x)", sp1VkHash[:4], proofBytes[:4])
+	if !bytes.Equal(groth16VkHash[:4], proofBytes[:4]) {
+		log.Fatalf("First 4 bytes of verifier key hash (%x) do not match proof hash (%x)", groth16VkHash[:4], proofBytes[:4])
 	}
-	fmt.Printf("First 4 bytes of hashes match: %x\n", sp1VkHash[:4])
+	fmt.Printf("First 4 bytes of hashes match: %x\n", groth16VkHash[:4])
 	proofBytes = proofBytes[4:]
 
 	// Unmarshal the verifier key
@@ -88,6 +88,7 @@ func main() {
 	}
 
 	sp1PublicInputsHash := sha256.Sum256(sp1PublicInputsBytes)
+	sp1VkHash := sha256.Sum256(sp1VkBytes)
 
 	// Zero out first 3 bits of each hash to comply with BN254 field elements
 	sp1PublicInputsHash[0] &= 0b00011111
@@ -95,25 +96,32 @@ func main() {
 	// Convert hashes to big.Int and print
 	sp1PublicInputsHashInt := new(big.Int).SetBytes(sp1PublicInputsHash[:])
 	sp1VkHashInt := new(big.Int).SetBytes(sp1VkHash[1:])
+	// should be
+	// 240588579570291191069633922492193405045446294797134778938540205899296046948
+	// not
+	// 159335228333860209053287741395645460535900282752125323597683882163219928095
 	fmt.Printf("sp1VkHash (decimal): %d\n", sp1VkHashInt)
+	expectedVkHashInt := new(big.Int)
+	expectedVkHashInt.SetString("240588579570291191069633922492193405045446294797134778938540205899296046948", 10)
+	fmt.Printf("sp1VkHash should be: %d\n", expectedVkHashInt)
+	// is correct
+	// 2397236252092451343954323895404520362570338060537676683748663039006606853217
+	// modulus
+	// 21888242871839275222246405745257275088548364400416034343698204186575808495617
 	fmt.Printf("sp1PublicInputsHash (decimal): %d\n", sp1PublicInputsHashInt)
 
-	// Convert big.Ints to fr_bn254.Vector format
-	vkVector := make(fr_bn254.Vector, 1)
-	if err := vkVector[0].SetBigInt(sp1VkHashInt); err != nil {
-		log.Fatalf("Error converting vk hash to field element: %v", err)
-	}
+	// Convert big.Ints to fr_bn254.Element format
+	var vkElement fr_bn254.Element
+	_ = vkElement.SetBigInt(expectedVkHashInt)
 
-	publicInputsVector := make(fr_bn254.Vector, 1)
-	if err := publicInputsVector[0].SetBigInt(sp1PublicInputsHashInt); err != nil {
-		log.Fatalf("Error converting public inputs hash to field element: %v", err)
-	}
+	var publicInputsElement fr_bn254.Element
+	_ = publicInputsElement.SetBigInt(sp1PublicInputsHashInt)
 
 	groth16PublicInputs := make(chan any)
 	go func() {
 		defer close(groth16PublicInputs)
-		groth16PublicInputs <- vkVector
-		groth16PublicInputs <- publicInputsVector
+		groth16PublicInputs <- vkElement
+		groth16PublicInputs <- publicInputsElement
 	}()
 
 	if err := w.Fill(2, 0, groth16PublicInputs); err != nil {

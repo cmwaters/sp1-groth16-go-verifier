@@ -28,6 +28,10 @@ async fn main() -> Result<()> {
     let vk = bincode::deserialize(&vk_bytes)?;
     println!("Successfully deserialized verifier key");
 
+    let groth16_proof = proof.proof.try_as_groth_16_ref().unwrap();
+    println!("Verifier Key Hash: {:?}", groth16_proof.public_inputs[0]);
+    println!("Public Input Hash: {:?}", groth16_proof.public_inputs[1]);
+
     // Create client and verify the proof
     println!("Initializing SP1 client...");
     let client = ProverClient::from_env();
