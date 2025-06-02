@@ -1,6 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
-use sp1_sdk::{ProverClient, SP1Stdin};
+use sp1_sdk::{ProverClient, SP1ProvingKey, SP1VerifyingKey, SP1Stdin, HashableKey};
 use std::fs;
 
 /// Fibonacci proof generator and Groth16 compressor
@@ -49,7 +49,7 @@ async fn main() -> Result<()> {
     
     // Setup the program
     let elf = include_bytes!("../program/target/elf-compilation/riscv32im-succinct-zkvm-elf/release/fibonacci-circuit");
-    let (pk, vk) = client.setup(elf);
+    let (pk, vk): (SP1ProvingKey, SP1VerifyingKey) = client.setup(elf);
     
     // Setup the inputs
     let mut stdin = SP1Stdin::new();
@@ -85,6 +85,10 @@ async fn main() -> Result<()> {
     // Save verifier key 
     fs::write("output/verifier_key.bin", bincode::serialize(&vk)?)?;
     println!("Verifier key saved to output/verifier_key.bin");
+
+    // Save verifier key hash in hex format
+    std::fs::write("output/verifier_key_hash.hex", vk.bytes32())?;
+    println!("Wrote verifier key in hex format to output/verifier_key_hash.hex");
     
     println!("All files generated successfully!");
     println!("Proof components saved in output/ directory");

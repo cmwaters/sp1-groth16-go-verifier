@@ -1,5 +1,5 @@
 use anyhow::Result;
-use sp1_sdk::{ProverClient, SP1ProofWithPublicValues};
+use sp1_sdk::{HashableKey, ProverClient, SP1ProofWithPublicValues, SP1VerifyingKey};
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
@@ -25,8 +25,9 @@ async fn main() -> Result<()> {
     let mut vk_bytes = Vec::new();
     vk_file.read_to_end(&mut vk_bytes)?;
     println!("Read {} bytes of verifier key data", vk_bytes.len());
-    let vk = bincode::deserialize(&vk_bytes)?;
+    let vk: SP1VerifyingKey = bincode::deserialize(&vk_bytes)?;
     println!("Successfully deserialized verifier key");
+
 
     let groth16_proof = proof.proof.try_as_groth_16_ref().unwrap();
     println!("Verifier Key Hash: {:?}", groth16_proof.public_inputs[0]);
