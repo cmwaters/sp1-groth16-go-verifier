@@ -1,18 +1,31 @@
-# ZK Compatibility System
+# SP1 Groth16 Go Verifier
 
 This project demonstrates a complete zero-knowledge proof system that:
 
 1. **SP1 Circuit**: Proves that a given number `x` is the nth Fibonacci number
 2. **Rust Prover**: Generates SP1 proofs and compresses them using Groth16
 3. **Go Verifier**: Verifies the Groth16 proofs using gnark's implementation
+4. **Rust Verifier**: Alternative implementation to verify Groth16 proofs using arkworks
 
 ## Architecture
 
 ```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   SP1 Circuit   │───▶│   Rust Prover    │───▶│  Go Verifier    │
-│  (Fibonacci)    │    │ (Groth16 Comp.)  │    │ (gnark Groth16) │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
+┌─────────────────┐    ┌──────────────────┐
+│   SP1 Circuit   │───▶│   Rust Prover    │
+│  (Fibonacci)    │    │ (Groth16 Comp.)  │
+└─────────────────┘    └──────────────────┘
+                              │
+                              ▼
+┌─────────────────┐    ┌─────────────────┐
+│  Go Verifier    │◀───┤  Proof Output   │
+│ (gnark Groth16) │    │                 │
+└─────────────────┘    └─────────────────┘
+                              │
+                              ▼
+                       ┌─────────────────┐
+                       │  Rust Verifier  │
+                       │ (arkworks)      │
+                       └─────────────────┘
 ```
 
 ## Components
@@ -39,6 +52,16 @@ This project demonstrates a complete zero-knowledge proof system that:
 - **Dependencies**: gnark, gnark-crypto
 - **Input**: Binary files from Rust prover
 - **Output**: Verification result
+
+### 4. Rust Verifier (`rust-verifier/`)
+- **Function**: Alternative implementation to verify Groth16 proofs using arkworks
+- **Dependencies**: arkworks, tokio, bincode
+- **Input**: Binary files from Rust prover
+- **Output**: Verification result
+- **Features**: 
+  - Uses arkworks library for Groth16 verification
+  - Provides an alternative implementation to the Go verifier
+  - Demonstrates cross-language compatibility of the proof system
 
 ## Prerequisites
 
@@ -79,9 +102,16 @@ This will:
 
 ### Step 3: Verify Proof
 
-Run the Go verifier to verify the Groth16 proof:
+You can verify the proof using either the Go or Rust implementation:
 
+#### Using Go Verifier:
 ```bash
 cd verifier
 go run main.go
+```
+
+#### Using Rust Verifier:
+```bash
+cd rust-verifier
+cargo run
 ```
