@@ -1,12 +1,12 @@
-.PHONY: all build generate verify verify-rust clean
+.PHONY: all build prove verify verify-rust clean
 
-all: build generate verify verify-rust
+all: build prove verify verify-rust
 
 build:
 	cargo build --release
 	cd program && cargo prove build
 
-generate:
+prove:
 	cargo run --release --bin prove -- --index 12
 
 verify:
